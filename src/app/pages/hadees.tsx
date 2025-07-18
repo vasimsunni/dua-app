@@ -2,8 +2,16 @@
 import { useState, useEffect } from "react";
 import Accordion from "../components/accordion";
 
-export default function Hadees({ items }) {
-  const [openAccordion, setOpenAccordion] = useState(null);
+type HadeesItem = {
+  id: number;
+  title: string;
+  type: string;
+  content: string;
+  imageData: string;
+};
+
+export default function Hadees({ items }: { items: HadeesItem[] }) {
+  const [openAccordion, setOpenAccordion] = useState<number | null>(null);
   const [filterType, setFilterType] = useState("hadees"); // default fallback
 
   // Read from localStorage on first load
@@ -15,15 +23,14 @@ export default function Hadees({ items }) {
   }, []);
 
   // Save to localStorage when filter changes
-  const handleFilterChange = (type) => {
+  const handleFilterChange = (type: string) => {
     setFilterType(type);
     localStorage.setItem("filterType", type);
   };
 
-  const handleToggle = (id) => {
+  const handleToggle = (id: number) => {
     setOpenAccordion((prev) => (prev === id ? null : id));
   };
-
   const filteredItems = items.filter((item) => item.type === filterType);
 
   return (
@@ -33,8 +40,8 @@ export default function Hadees({ items }) {
         <button
           onClick={() => handleFilterChange("hadees")}
           className={`px-4 py-2 rounded ${filterType === "hadees"
-              ? "bg-slate-600 text-white"
-              : "bg-gray-300 text-black"
+            ? "bg-slate-600 text-white"
+            : "bg-gray-300 text-black"
             }`}
         >
           Hadees
@@ -42,8 +49,8 @@ export default function Hadees({ items }) {
         <button
           onClick={() => handleFilterChange("quran")}
           className={`px-4 py-2 rounded ${filterType === "quran"
-              ? "bg-slate-600 text-white"
-              : "bg-gray-300 text-black"
+            ? "bg-slate-600 text-white"
+            : "bg-gray-300 text-black"
             }`}
         >
           Quran

@@ -1,5 +1,7 @@
-import { getHadeesData } from "../../../lib/fetchdata";
-import Hadees from "../pages/hadees";
+'use client';
+
+import { useEffect, useState } from 'react';
+import Hadees from '../pages/hadees';
 
 type HadeesItem = {
   id: number;
@@ -9,16 +11,28 @@ type HadeesItem = {
   imageData: string;
 };
 
+export default function Dua() {
+  const [duas, setDuas] = useState<HadeesItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function Dua() {
+  useEffect(() => {
+    const fetchDuas = async () => {
+      const res = await fetch('/api/dua', { cache: 'no-store' });
+      const data = await res.json();
+      setDuas(data);
+      setLoading(false);
+    };
 
-  const allDuaItems: HadeesItem[] = await getHadeesData();
+    fetchDuas();
+  }, []);
 
-  console.log(JSON.stringify(allDuaItems));
+  if (loading) {
+    return <div className="text-center p-4">Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-2xl">
-          <Hadees items={allDuaItems} />
+      <Hadees items={duas} />
     </div>
   );
 }

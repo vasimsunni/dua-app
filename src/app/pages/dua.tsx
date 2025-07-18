@@ -1,9 +1,18 @@
 import { getHadeesData } from "../../../lib/fetchdata";
 import Hadees from "../pages/hadees";
 
+type HadeesItem = {
+  id: number;
+  title: string;
+  type: string;
+  content: string;
+  imageData: string;
+};
+
+
 export default async function Dua() {
 
-  const allDuaItems = await getHadeesData();
+  const allDuaItems: HadeesItem[] = await getHadeesData();
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-2xl">
